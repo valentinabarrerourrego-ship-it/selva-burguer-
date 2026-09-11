@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Interactivo - Comidas Rápidas</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+            --primary: #ff5722;
+            --primary-hover: #e64a19;
+            --secondary: #ffc107;
+            --border-color: #e0e0e0;
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --font-size: 16px;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #f8f9fa;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        html {
+            font-size: var(--font-size);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Encabezado y Accesibilidad */
+        header {
+            background-color: var(--card-bg);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .accessibility-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        button.btn-acc {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        button.btn-acc:hover, button.btn-acc:focus {
+            background: var(--primary);
+            color: white;
+            outline: 3px solid var(--secondary);
+        }
+
+        /* Navegación por Categorías */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.05);
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover, nav a:focus {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            font-size: 2rem;
+            border-bottom: 3px solid var(--secondary);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Tarjeta de Producto con Animación 3D */
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            perspective: 1000px;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotateX(4deg) rotateY(-2deg);
+            box-shadow: 0 15px 30px rgba(255, 87, 34, 0.25);
+        }
+
+        .card-img-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.15) rotate(2deg);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .card-price {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .select-option {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .btn-add {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Sección Preparación con Movimiento de Cámara 3D */
+        .prep-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        .viewport-3d {
+            width: 100%;
+            max-width: 600px;
+            height: 320px;
+            margin: 0 auto 1.5rem auto;
+            border-radius: 15px;
+            background: #1a1a1a;
+            position: relative;
+            overflow: hidden;
+            perspective: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .burger-layer {
+            width: 210px;
+            height: 38px;
+            position: absolute;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Posiciones de cámara */
+        .cam-step-1 { transform: rotateX(25deg) rotateY(0deg) translateZ(0); }
+        .cam-step-2 { transform: rotateX(55deg) rotateY(-25deg) scale(1.1); }
+        .cam-step-3 { transform: rotateX(15deg) rotateY(35deg) translateZ(20px); }
+        .cam-step-4 { transform: rotateX(0deg) rotateY(360deg) scale(1.15); }
+
+        .layer-bread-bottom { background: #d7ccc8; color: #3e2723; bottom: 35px; }
+        .layer-meat { background: #5d4037; bottom: 85px; }
+        .layer-cheese { background: #fbc02d; color: #333; bottom: 130px; }
+        .layer-bread-top { background: #a1887f; bottom: 175px; }
+
+        .controls-prep {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Carrito Flotante */
+        .cart-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Modal Emergente Descuento */
+        .modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow);
+            animation: popup 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popup {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--text-color);
+        }
+
+        /* Footer y Contacto */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado con Accesibilidad -->
+    <header role="banner">
+        <div class="logo-container">
+            <img src="logo.jpg" alt="Logo de Comidas Rápidas" class="logo-img" onerror="this.src='https://via.placeholder.com/65?text=LOGO'">
+            <h1>Sabor & Movimiento</h1>
+        </div>
+        <div class="accessibility-controls" aria-label="Controles de Accesibilidad">
+            <button class="btn-acc" onclick="toggleTheme()" aria-label="Cambiar modo claro u oscuro">🌙 / ☀️ Modo</button>
+            <button class="btn-acc" onclick="changeFontSize(1)" aria-label="Aumentar fuente">A+</button>
+            <button class="btn-acc" onclick="changeFontSize(-1)" aria-label="Disminuir fuente">A-</button>
+        </div>
+    </header>
+
+    <!-- Navegación por Categorías -->
+    <nav role="navigation" aria-label="Categorías del Menú">
+        <a href="#hamburguesas">Hamburguesas</a>
+        <a href="#salchipapas">Salchipapas</a>
+        <a href="#mazorcadas">Mazorcadas</a>
+        <a href="#bebidas">Malteadas y Jugos</a>
+        <a href="#preparacion">Preparación 3D</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Categoría: Hamburguesas -->
+        <section id="hamburguesas">
+            <h2 class="section-title">Hamburguesas</h2>
+            <div class="grid">
+
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500" alt="Hamburguesa Campesina Triple Carne" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Campesina Triple Carne</h3>
+                        <p>Triple carne artesanal con baño de queso fundido, tocineta crujiente, maíz tierno y salsas.</p>
+                        <div class="card-price">$ 28.000 COP</div>
+                        <label for="base-campesina">Selecciona tu base:</label>
+                        <select id="base-campesina" class="select-option">
+                            <option value="Con Pan">Con Pan</option>
+                            <option value="Con Plátano">Con Plátano</option>
+                        </select>
+                        <button class="btn-add" onclick="addBurgerToCart('Campesina Triple Carne', 28000, 'base-campesina')">Agregar al Pedido</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://i.pinimg.com/736x/57/1f/ff/571fff618531d22fa694c1e419b309f6.jpg" alt="Hamburguesa Callejera" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Hamburguesa Callejera</h3>
+                        <p>Doble carne, queso, ripio de papa, lechuga fresca, tomate y salsa especial.</p>
+                        <div class="card-price">$ 18.000 COP</div>
+                        <label for="base-callejera">Selecciona tu base:</label>
+                        <select id="base-callejera" class="select-option">
+                            <option value="Con Pan">Con Pan</option>
+                            <option value="Con Plátano">Con Plátano</option>
+                        </select>
+                        <button class="btn-add" onclick="addBurgerToCart('Hamburguesa Callejera', 18000, 'base-callejera')">Agregar al Pedido</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://i.imgur.com/lcNTLKu.jpeg" alt="Hamburguesa Tarzán" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Hamburguesa Tarzán</h3>
+                        <p>Carne gigante, pepinillos, aro de cebolla crocante, extra queso cheddar y tocineta.</p>
+                        <div class="card-price">$ 24.000 COP</div>
+                        <label for="base-tarzan">Selecciona tu base:</label>
+                        <select id="base-tarzan" class="select-option">
+                            <option value="Con Pan">Con Pan</option>
+                            <option value="Con Plátano">Con Plátano</option>
+                        </select>
+                        <button class="btn-add" onclick="addBurgerToCart('Hamburguesa Tarzán', 24000, 'base-tarzan')">Agregar al Pedido</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://i.pinimg.com/1200x/c5/a6/e3/c5a6e329930c17ff588c2ea3b4aab425.jpg" alt="Hamburguesa Mexicana" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Hamburguesa Mexicana</h3>
+                        <p>Carne jugosa, guacamole artesanal, jalapeños, nachos crocantes y queso fundido.</p>
+                        <div class="card-price">$ 23.000 COP</div>
+                        <label for="base-mexicana">Selecciona tu base:</label>
+                        <select id="base-mexicana" class="select-option">
+                            <option value="Con Pan">Con Pan</option>
+                            <option value="Con Plátano">Con Plátano</option>
+                        </select>
+                        <button class="btn-add" onclick="addBurgerToCart('Hamburguesa Mexicana', 23000, 'base-mexicana')">Agregar al Pedido</button>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Categoría: Salchipapas -->
+        <section id="salchipapas">
+            <h2 class="section-title">Salchipapas</h2>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1585109649139-366815a0d713?w=500" alt="Salchipapa Infantil" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Salchipapa Infantil</h3>
+                        <p>Porción ideal con papa francesa, salchicha picada y queso gratinado.</p>
+                        <div class="card-price">$ 12.000 COP</div>
+                        <button class="btn-add" onclick="addToCart('Salchipapa Infantil', 12000)">Agregar al Pedido</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://i.pinimg.com/736x/e9/b6/f0/e9b6f0037b7c2c10459fdbe32d245162.jpg" alt="Salchipapa Personal" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Salchipapa Personal</h3>
+                        <p>Papa dorada, salchicha especial, queso derretido, huevo de codorniz y salsas.</p>
+                        <div class="card-price">$ 17.000 COP</div>
+                        <button class="btn-add" onclick="addToCart('Salchipapa Personal', 17000)">Agregar al Pedido</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://i.pinimg.com/736x/5b/a2/78/5ba278620ce315c8e68de97c888b1f8f.jpg" alt="Súper Salchichoricarpol" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Súper salchipapa</h3>
+                        <p>Combinación gigante de salchichas premium, tocineta, pollo desmechado y abundante queso.</p>
+                        <div class="card-price">$ 29.000 COP</div>
+                        <button class="btn-add" onclick="addToCart('Súper Salchichoricarpol', 29000)">Agregar al Pedido</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Categoría: Mazorcadas -->
+        <section id="mazorcadas">
+            <h2 class="section-title">Mazorcadas</h2>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=500" alt="Mazorcada Mixta" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Mazorcada Mixta</h3>
+                        <p>Base de maíz dulce, carne desmechada, pollo, tocineta, fosforito de papa y queso costeño.</p>
+                        <div class="card-price">$ 25.000 COP</div>
+                        <button class="btn-add" onclick="addToCart('Mazorcada Mixta', 25000)">Agregar al Pedido</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500" alt="Mazorcada de Pollo" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Mazorcada de Pollo</h3>
+                        <p>Maíz tierno con pollo desmechado, salsa tártara, queso fundido y tocineta.</p>
+                        <div class="card-price">$ 22.000 COP</div>
+                        <button class="btn-add" onclick="addToCart('Mazorcada de Pollo', 22000)">Agregar al Pedido</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Categoría: Malteadas y Jugos -->
+        <section id="bebidas">
+            <h2 class="section-title">Malteadas y Jugos Naturales</h2>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=500" alt="Malteadas Especiales" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Malteadas Especiales</h3>
+                        <p>Sabores: Chocolate, Vainilla, Oreo y Arequipe con crema batida.</p>
+                        <div class="card-price">$ 14.000 COP</div>
+                        <button class="btn-add" onclick="addToCart('Malteada Especial', 14000)">Agregar al Pedido</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1613478223719-2ab802602423?w=500" alt="Jugos Naturales" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Jugos Naturales (Leche o Agua)</h3>
+                        <p>Fruta natural a elección: Mango, Mora, Fresa, Guanábana y Maracuyá.</p>
+                        <div class="card-price">$ 9.000 COP</div>
+                        <button class="btn-add" onclick="addToCart('Jugo Natural', 9000)">Agregar al Pedido</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Preparación Interactiva 3D -->
+        <section id="preparacion" class="prep-section">
+            <h2 class="section-title">Preparación Interactiva (Vista 3D)</h2>
+            <p>Selecciona cada paso para girar la vista de cámara y armar la hamburguesa:</p>
+
+            <div class="viewport-3d cam-step-1" id="viewport">
+                <div class="burger-layer layer-bread-bottom">🍞 Base de Pan / Plátano</div>
+                <div class="burger-layer layer-meat" id="layer-2" style="opacity: 0.3;">🥩 Carne a la Parrilla</div>
+                <div class="burger-layer layer-cheese" id="layer-3" style="opacity: 0.3;">🧀 Baño de Queso</div>
+                <div class="burger-layer layer-bread-top" id="layer-4" style="opacity: 0.3;">🍞 Tapa de Pan / Plátano</div>
+            </div>
+
+            <div class="controls-prep">
+                <button class="btn-acc" onclick="setPrepStep(1)">Paso 1: Base</button>
+                <button class="btn-acc" onclick="setPrepStep(2)">Paso 2: Carne Artesanal</button>
+                <button class="btn-acc" onclick="setPrepStep(3)">Paso 3: Baño de Queso</button>
+                <button class="btn-acc" onclick="setPrepStep(4)">Paso 4: Producto Listo</button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Carrito Flotante -->
+    <div class="cart-float" onclick="sendOrderWhatsApp()" aria-label="Ver Pedido y enviar por WhatsApp">
+        🛒 Mi Pedido: <span id="cart-count">0</span> ítems | Total: $<span id="cart-total">0</span>
+    </div>
+
+    <!-- Footer y WhatsApp -->
+    <footer id="contacto" role="contentinfo">
+        <h3>¿Quieres hacer un pedido personalizado o contactarnos?</h3>
+        <p>Escríbenos directamente a nuestra línea oficial de atención:</p>
+        <a href="https://wa.me/573186694863?text=Hola,%20quisiera%20hacer%20un%20pedido%20o%20hacer%20una%20consulta" class="whatsapp-btn" target="_blank" rel="noopener">
+            📱 Contactar por WhatsApp (3186694863)
+        </a>
+        <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">© 2026 Menú Interactivo de Comidas Rápidas. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Ventana Emergente (Descuento 20%) -->
+    <div class="modal" id="promoModal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()" aria-label="Cerrar aviso emergente">&times;</button>
+            <h2 id="modalTitle" style="color: var(--primary);">¡OFERTA ESPECIAL! 🎉</h2>
+            <p id="modalDesc" style="font-size: 1.2rem; font-weight: bold;">
+                ¡Obtén un <span style="color: var(--primary);">20% DE DESCUENTO</span> en la tercera compra de nuestro producto!
+            </p>
+            <p>Aprovecha esta gran promoción en tus pedidos online.</p>
+            <button class="btn-add" onclick="closeModal()">¡Entendido, ver menú!</button>
+        </div>
+    </div>
+
+    <!-- Lógica de Interactividad -->
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addBurgerToCart(name, price, selectId) {
+            const baseOption = document.getElementById(selectId).value;
+            const fullName = `${name} (${baseOption})`;
+            addToCart(fullName, price);
+        }
+
+        function addToCart(product, price) {
+            cart.push({ product, price });
+            total += price;
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-total').innerText = total.toLocaleString('es-CO');
+        }
+
+        function sendOrderWhatsApp() {
+            if (cart.length === 0) {
+                alert("Tu carrito está vacío. Agrega algún producto para realizar el pedido.");
+                return;
+            }
+            let message = "Hola! Quisiera realizar el siguiente pedido:%0A";
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.product} - $${item.price.toLocaleString('es-CO')}%0A`;
+            });
+            message += `%0ATotal a pagar: $${total.toLocaleString('es-CO')}`;
+            
+            window.open(`https://wa.me/573186694863?text=${message}`, '_blank');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+        }
+
+        let currentFontSize = 16;
+        function changeFontSize(delta) {
+            currentFontSize += delta;
+            if (currentFontSize < 12) currentFontSize = 12;
+            if (currentFontSize > 22) currentFontSize = 22;
+            document.documentElement.style.setProperty('--font-size', currentFontSize + 'px');
+        }
+
+        function setPrepStep(step) {
+            const viewport = document.getElementById('viewport');
+            const l2 = document.getElementById('layer-2');
+            const l3 = document.getElementById('layer-3');
+            const l4 = document.getElementById('layer-4');
+
+            viewport.className = 'viewport-3d cam-step-' + step;
+
+            l2.style.opacity = step >= 2 ? '1' : '0.3';
+            l3.style.opacity = step >= 3 ? '1' : '0.3';
+            l4.style.opacity = step >= 4 ? '1' : '0.3';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('promoModal');
+            modal.style.opacity = '0';
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+    </script>
+</body>
+</html>
