@@ -218,61 +218,35 @@
             background: var(--primary-hover);
         }
 
-        /* Sección Preparación con Movimiento de Cámara 3D */
-        .prep-section {
+        /* Sección de Video Responsivo */
+        .video-section {
             background: var(--card-bg);
-            padding: 2rem;
+            padding: 2.5rem 1rem;
             border-radius: 20px;
             box-shadow: var(--shadow);
-            margin-bottom: 4rem;
+            margin: 3rem 0;
             text-align: center;
         }
 
-        .viewport-3d {
-            width: 100%;
-            max-width: 600px;
-            height: 320px;
-            margin: 0 auto 1.5rem auto;
-            border-radius: 15px;
-            background: #1a1a1a;
+        .video-container {
             position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 56.25%; /* Proporción 16:9 */
+            height: 0;
             overflow: hidden;
-            perspective: 800px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
         }
 
-        .burger-layer {
-            width: 210px;
-            height: 38px;
+        .video-container iframe {
             position: absolute;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        /* Posiciones de cámara */
-        .cam-step-1 { transform: rotateX(25deg) rotateY(0deg) translateZ(0); }
-        .cam-step-2 { transform: rotateX(55deg) rotateY(-25deg) scale(1.1); }
-        .cam-step-3 { transform: rotateX(15deg) rotateY(35deg) translateZ(20px); }
-        .cam-step-4 { transform: rotateX(0deg) rotateY(360deg) scale(1.15); }
-
-        .layer-bread-bottom { background: #d7ccc8; color: #3e2723; bottom: 35px; }
-        .layer-meat { background: #5d4037; bottom: 85px; }
-        .layer-cheese { background: #fbc02d; color: #333; bottom: 130px; }
-        .layer-bread-top { background: #a1887f; bottom: 175px; }
-
-        .controls-prep {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
         /* Carrito Flotante */
@@ -370,7 +344,7 @@
     <!-- Encabezado con Accesibilidad -->
     <header role="banner">
         <div class="logo-container">
-            <img src="logo.jpg" alt="Logo de Comidas Rápidas" class="logo-img" onerror="this.src='https://via.placeholder.com/65?text=LOGO'">
+            <img src="https://i.imgur.com/fwxRyX1.jpeg" alt="Logo de Comidas Rápidas" class="logo-img" onerror="this.src='https://via.placeholder.com/65?text=LOGO'">
             <h1>Sabor & Movimiento</h1>
         </div>
         <div class="accessibility-controls" aria-label="Controles de Accesibilidad">
@@ -384,9 +358,8 @@
     <nav role="navigation" aria-label="Categorías del Menú">
         <a href="#hamburguesas">Hamburguesas</a>
         <a href="#salchipapas">Salchipapas</a>
-        <a href="#mazorcadas">Mazorcadas</a>
         <a href="#bebidas">Malteadas y Jugos</a>
-        <a href="#preparacion">Preparación 3D</a>
+        <a href="#video-destacado">Video</a>
         <a href="#contacto">Contacto</a>
     </nav>
 
@@ -428,40 +401,6 @@
                             <option value="Con Plátano">Con Plátano</option>
                         </select>
                         <button class="btn-add" onclick="addBurgerToCart('Hamburguesa Callejera', 18000, 'base-callejera')">Agregar al Pedido</button>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <div class="card-img-container">
-                        <img src="https://i.imgur.com/lcNTLKu.jpeg" alt="Hamburguesa Tarzán" class="card-img">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Hamburguesa Tarzán</h3>
-                        <p>Carne gigante, pepinillos, aro de cebolla crocante, extra queso cheddar y tocineta.</p>
-                        <div class="card-price">$ 24.000 COP</div>
-                        <label for="base-tarzan">Selecciona tu base:</label>
-                        <select id="base-tarzan" class="select-option">
-                            <option value="Con Pan">Con Pan</option>
-                            <option value="Con Plátano">Con Plátano</option>
-                        </select>
-                        <button class="btn-add" onclick="addBurgerToCart('Hamburguesa Tarzán', 24000, 'base-tarzan')">Agregar al Pedido</button>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <div class="card-img-container">
-                        <img src="https://i.pinimg.com/1200x/c5/a6/e3/c5a6e329930c17ff588c2ea3b4aab425.jpg" alt="Hamburguesa Mexicana" class="card-img">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Hamburguesa Mexicana</h3>
-                        <p>Carne jugosa, guacamole artesanal, jalapeños, nachos crocantes y queso fundido.</p>
-                        <div class="card-price">$ 23.000 COP</div>
-                        <label for="base-mexicana">Selecciona tu base:</label>
-                        <select id="base-mexicana" class="select-option">
-                            <option value="Con Pan">Con Pan</option>
-                            <option value="Con Plátano">Con Plátano</option>
-                        </select>
-                        <button class="btn-add" onclick="addBurgerToCart('Hamburguesa Mexicana', 23000, 'base-mexicana')">Agregar al Pedido</button>
                     </div>
                 </article>
 
@@ -510,36 +449,6 @@
             </div>
         </section>
 
-        <!-- Categoría: Mazorcadas -->
-        <section id="mazorcadas">
-            <h2 class="section-title">Mazorcadas</h2>
-            <div class="grid">
-                <article class="card">
-                    <div class="card-img-container">
-                        <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=500" alt="Mazorcada Mixta" class="card-img">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Mazorcada Mixta</h3>
-                        <p>Base de maíz dulce, carne desmechada, pollo, tocineta, fosforito de papa y queso costeño.</p>
-                        <div class="card-price">$ 25.000 COP</div>
-                        <button class="btn-add" onclick="addToCart('Mazorcada Mixta', 25000)">Agregar al Pedido</button>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <div class="card-img-container">
-                        <img src="https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500" alt="Mazorcada de Pollo" class="card-img">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Mazorcada de Pollo</h3>
-                        <p>Maíz tierno con pollo desmechado, salsa tártara, queso fundido y tocineta.</p>
-                        <div class="card-price">$ 22.000 COP</div>
-                        <button class="btn-add" onclick="addToCart('Mazorcada de Pollo', 22000)">Agregar al Pedido</button>
-                    </div>
-                </article>
-            </div>
-        </section>
-
         <!-- Categoría: Malteadas y Jugos -->
         <section id="bebidas">
             <h2 class="section-title">Malteadas y Jugos Naturales</h2>
@@ -570,23 +479,11 @@
             </div>
         </section>
 
-        <!-- Preparación Interactiva 3D -->
-        <section id="preparacion" class="prep-section">
-            <h2 class="section-title">Preparación Interactiva (Vista 3D)</h2>
-            <p>Selecciona cada paso para girar la vista de cámara y armar la hamburguesa:</p>
-
-            <div class="viewport-3d cam-step-1" id="viewport">
-                <div class="burger-layer layer-bread-bottom">🍞 Base de Pan / Plátano</div>
-                <div class="burger-layer layer-meat" id="layer-2" style="opacity: 0.3;">🥩 Carne a la Parrilla</div>
-                <div class="burger-layer layer-cheese" id="layer-3" style="opacity: 0.3;">🧀 Baño de Queso</div>
-                <div class="burger-layer layer-bread-top" id="layer-4" style="opacity: 0.3;">🍞 Tapa de Pan / Plátano</div>
-            </div>
-
-            <div class="controls-prep">
-                <button class="btn-acc" onclick="setPrepStep(1)">Paso 1: Base</button>
-                <button class="btn-acc" onclick="setPrepStep(2)">Paso 2: Carne Artesanal</button>
-                <button class="btn-acc" onclick="setPrepStep(3)">Paso 3: Baño de Queso</button>
-                <button class="btn-acc" onclick="setPrepStep(4)">Paso 4: Producto Listo</button>
+        <!-- NUEVA SECCIÓN: Video Integrado -->
+        <section id="video-destacado" class="video-section">
+            <h2 class="section-title">Conoce Cómo Preparamos Nuestros Productos</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/f8HDbMPhNLQ" title="Video de Comidas Rápidas" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </section>
 
@@ -665,19 +562,6 @@
             if (currentFontSize < 12) currentFontSize = 12;
             if (currentFontSize > 22) currentFontSize = 22;
             document.documentElement.style.setProperty('--font-size', currentFontSize + 'px');
-        }
-
-        function setPrepStep(step) {
-            const viewport = document.getElementById('viewport');
-            const l2 = document.getElementById('layer-2');
-            const l3 = document.getElementById('layer-3');
-            const l4 = document.getElementById('layer-4');
-
-            viewport.className = 'viewport-3d cam-step-' + step;
-
-            l2.style.opacity = step >= 2 ? '1' : '0.3';
-            l3.style.opacity = step >= 3 ? '1' : '0.3';
-            l4.style.opacity = step >= 4 ? '1' : '0.3';
         }
 
         function closeModal() {
